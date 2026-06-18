@@ -1,0 +1,204 @@
+/* ========== ESTILOS ESPECÍFICOS: GESTIÓN DE PAGOS (ADMIN) ========== */
+
+.content-wrapper {
+    padding: 30px;
+    min-height: calc(100vh - 70px);
+}
+
+/* Tabla estilos */
+.table-container {
+    background: white;
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
+    border: 1px solid #eff3f8;
+    overflow-x: auto;
+    margin-bottom: 30px;
+}
+
+.payments-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.payments-table thead th {
+    padding: 16px 12px;
+    font-weight: 600;
+    color: #1e293b;
+    border-bottom: 2px solid #e2e8f0;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.payments-table tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.payments-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Badges de estado de pago */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status-pagado {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-pendiente {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.status-cancelado {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Badges de método de pago */
+.method-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.method-efectivo {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.method-tarjeta {
+    background: #e9d5ff;
+    color: #6b21a5;
+}
+
+.method-transferencia {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Paginación */
+.paginador-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.paginador-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.paginador-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    min-width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #64748b;
+    text-decoration: none;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.paginador-btn:hover:not(.disabled):not(.active) {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+.paginador-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+}
+
+.paginador-btn.disabled {
+    background: #f8fafc;
+    color: #cbd5e1;
+    border-color: #f1f5f9;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.paginador-dots {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    padding: 0 4px;
+}
+
+.paginador-info {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Estilos para el botón de comprobante */
+.btn-comprobante {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #3b82f6;
+    background: #eff6ff;
+    padding: 6px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.75rem;
+    transition: all 0.2s;
+}
+
+.btn-comprobante:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.comprobante-vacio {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        padding: 12px;
+    }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+
+    .paginador-container {
+        flex-direction: column-reverse;
+        gap: 15px;
+        align-items: center;
+        text-align: center;
+    }
+}

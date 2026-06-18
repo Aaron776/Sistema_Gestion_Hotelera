@@ -1,0 +1,63 @@
+/* ========== ESTILOS ESPECÍFICOS: DASHBOARD ADMIN ========== */
+
+.dash-canvas {
+    max-height: 240px;
+    width: 100%;
+}
+
+.stat-value small {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.recent-bookings-container {
+    margin: 0 30px 24px 30px;
+}
+
+.view-all-link {
+    color: #3b82f6;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+    color: #2563eb;
+}
+
+.occupancy-section {
+    background: white;
+    border-radius: 28px;
+    padding: 1rem 1.5rem;
+    margin: 0 30px 30px 30px;
+    border: 1px solid #eff3f8;
+}
+
+.occupancy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.occupancy-subtitle {
+    font-size: 0.8rem;
+    color: #5f6c84;
+    margin-top: 4px;
+}
+
+.trend-badge-alt {
+    background: #eef2ff;
+    padding: 6px 14px;
+    border-radius: 60px;
+}
+
+.occupancy-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 0.7rem;
+    color: #3b4e6e;
+}

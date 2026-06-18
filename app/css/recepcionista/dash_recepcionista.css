@@ -1,0 +1,118 @@
+/* ========== ESTILOS ESPECÍFICOS: DASHBOARD RECEPCIONISTA ========== */
+
+.content-wrapper {
+    padding: 30px;
+}
+
+/* Grid de gráficas y tablas */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.card {
+    background: white;
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    border: 1px solid #eff3f8;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.card-header a {
+    font-size: 0.7rem;
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+/* Tabla de reservas */
+.reservas-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.reservas-table th {
+    text-align: left;
+    padding: 10px 4px 8px 0;
+    font-weight: 600;
+    color: #5b6e8c;
+}
+
+.reservas-table td {
+    padding: 10px 4px;
+    border-bottom: 1px solid #f0f2f8;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 40px;
+    font-size: 0.65rem;
+    font-weight: 600;
+}
+
+.status-checkin { background: #dbeafe; color: #1e40af; }
+.status-checkout { background: #fef3c7; color: #b45309; }
+.status-confirmada { background: #dcfce7; color: #15803d; }
+.status-finalizada { background: #f0f9ff; color: #0369a1; }
+
+/* Acciones rápidas */
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 20px;
+    transition: 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.action-item:hover { background: #eef2ff; }
+
+.action-info { display: flex; align-items: center; gap: 12px; }
+
+.action-icon {
+    width: 40px; height: 40px;
+    background: white;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: #3b82f6; font-size: 1.1rem;
+}
+
+.full-width { grid-column: span 2; }
+
+.occupancy-bar { margin-top: 12px; }
+.progress-bar-bg { background: #e2e8f0; border-radius: 40px; height: 10px; width: 100%; overflow: hidden; }
+.progress-fill { background: linear-gradient(90deg, #3b82f6, #2563eb); height: 10px; border-radius: 40px; transition: width 1s ease; }
+
+@media (max-width: 992px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .full-width { grid-column: span 1; }
+}

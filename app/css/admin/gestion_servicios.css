@@ -1,0 +1,181 @@
+/* ========== ESTILOS ESPECÍFICOS: GESTIÓN DE SERVICIOS (ADMIN) ========== */
+
+.content-wrapper {
+    padding: 30px;
+    min-height: calc(100vh - 70px);
+}
+
+/* Contenedor botón nuevo servicio */
+.btn-add-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+
+/* Botón agregar servicio */
+.btn-add {
+    background: linear-gradient(95deg, #3b82f6, #2563eb);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    text-decoration: none;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    color: white;
+}
+
+/* Tabla estilos */
+.table-container {
+    background: white;
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
+    border: 1px solid #eff3f8;
+    overflow-x: auto;
+}
+
+.services-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.85rem;
+}
+
+.services-table thead th {
+    padding: 16px 12px;
+    font-weight: 600;
+    color: #1e293b;
+    border-bottom: 2px solid #e2e8f0;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.services-table tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.services-table tbody tr {
+    transition: background 0.2s;
+}
+
+.services-table tbody tr:hover {
+    background: #f8fafc;
+    cursor: pointer;
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-edit {
+    color: #3b82f6;
+    background: #eef2ff;
+}
+
+.btn-edit:hover {
+    background: #3b82f6;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.btn-delete:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Paginador */
+.paginador-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.paginador-nav {
+    display: flex;
+    gap: 6px;
+}
+
+.paginador-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.paginador-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.paginador-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.paginador-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.paginador-info {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* SweetAlert2 - bordes redondeados del sistema */
+.swal2-rounded-30 {
+    border-radius: 30px !important;
+}
+
+@media (max-width: 768px) {
+    .table-container { padding: 12px; }
+    .content-wrapper { padding: 20px; }
+}

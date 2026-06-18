@@ -1,0 +1,288 @@
+/* ========== ESTILOS ESPECÍFICOS DE GESTIÓN DE USUARIOS ========== */
+
+.content-wrapper {
+    padding: 30px;
+    min-height: calc(100vh - 70px);
+}
+
+/* Cabecera de Sección Mejorada */
+.section-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 30px 0;
+    padding-bottom: 20px; /* Consistente con gestion_habitaciones.css */
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.section-header h2 {
+    font-size: 1.7rem; /* Consistente con gestion_habitaciones.css */
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0; /* Consistente con gestion_habitaciones.css */
+}
+
+.section-header h2 i {
+    color: #3b82f6;
+    margin-right: 10px; /* Consistente con gestion_habitaciones.css */
+}
+
+.section-header p {
+    font-size: 0.9rem; /* Consistente con gestion_habitaciones.css */
+    color: #64748b;
+    margin: 0; /* Consistente con gestion_habitaciones.css */
+}
+
+/* Botón agregar usuario */
+.btn-add {
+    background: linear-gradient(95deg, #3b82f6, #2563eb);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    text-decoration: none;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    color: white;
+}
+
+/* Tabla estilos */
+.table-container {
+    background: white; /* Consistente con gestion_habitaciones.css */
+    border-radius: 28px; /* Consistente con gestion_habitaciones.css */
+    padding: 20px; /* Consistente con gestion_habitaciones.css */
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02); /* Consistente con gestion_habitaciones.css */
+    border: 1px solid #eff3f8; /* Consistente con gestion_habitaciones.css */
+    overflow-x: auto;
+}
+
+table { /* Se aplica a todas las tablas, no solo dataTable */
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.85rem; /* Consistente con gestion_habitaciones.css */
+}
+
+thead th {
+    padding: 16px 12px; /* Consistente con gestion_habitaciones.css */
+    font-weight: 600; /* Consistente con gestion_habitaciones.css */
+    color: #1e293b; /* Consistente con gestion_habitaciones.css */
+    border-bottom: 2px solid #e2e8f0; /* Consistente con gestion_habitaciones.css */
+    font-size: 0.85rem; /* Consistente con gestion_habitaciones.css */
+    text-align: left;
+}
+
+tbody td {
+    padding: 14px 12px; /* Consistente con gestion_habitaciones.css */
+    vertical-align: middle;
+    color: #334155; /* Consistente con gestion_habitaciones.css */
+    border-bottom: 1px solid #f1f5f9;
+}
+
+tbody tr:hover {
+    background: #f8fafc; /* Consistente con gestion_habitaciones.css */
+    cursor: pointer;
+}
+
+/* Badge de roles */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.role-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.role-admin {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+}
+
+.role-admin::before {
+    background: #2563eb;
+}
+
+.role-user { /* No se usa en el HTML proporcionado, pero se mantiene por si acaso */
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #dcfce7;
+}
+
+.role-user::before {
+    background: #16a34a;
+}
+
+.role-recepcionista {
+    background: #fffaf5;
+    color: #ea580c;
+    border: 1px solid #ffedd5;
+}
+
+.role-recepcionista::before {
+    background: #ea580c;
+}
+
+/* Badge de último acceso */
+.time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+    background: #f1f5f9;
+}
+
+.time-badge.recent {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.action-buttons {
+    display: flex; /* Consistente con gestion_habitaciones.css */
+    gap: 8px; /* Consistente con gestion_habitaciones.css */
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    background: transparent;
+    border: none; /* Consistente con gestion_habitaciones.css */
+    width: 32px; /* Consistente con gestion_habitaciones.css */
+    height: 32px; /* Consistente con gestion_habitaciones.css */
+    border-radius: 10px; /* Consistente con gestion_habitaciones.css */
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-edit {
+    color: #3b82f6;
+    background: #eef2ff;
+}
+
+.btn-edit:hover {
+    background: #3b82f6;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.btn-delete:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-password {
+    color: #8b5cf6;
+    background: #ede9fe;
+}
+
+.btn-password:hover {
+    background: #8b5cf6;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Paginador */
+.paginador-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.paginador-nav {
+    display: flex;
+    gap: 6px;
+}
+
+.paginador-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.paginador-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.paginador-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+}
+
+.paginador-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background: #f8fafc;
+}
+
+.paginador-info {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* SweetAlert2 - bordes redondeados del sistema */
+.swal2-rounded-30 {
+    border-radius: 30px !important;
+}
+
+@media (max-width: 768px) {
+    .table-container { padding: 12px; }
+    .content-wrapper { padding: 20px; }
+    .section-container { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .paginador-container {
+        flex-direction: column-reverse;
+        gap: 15px;
+        align-items: center;
+        text-align: center;
+    }
+}

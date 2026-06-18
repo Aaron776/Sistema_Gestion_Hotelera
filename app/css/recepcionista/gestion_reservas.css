@@ -1,0 +1,268 @@
+/* ========== ESTILOS ESPECÍFICOS: GESTIÓN DE RESERVAS (RECEPCIONISTA) ========== */
+
+.content-wrapper {
+    padding: 30px;
+}
+
+/* Botón agregar reserva */
+.btn-add {
+    background: linear-gradient(95deg, #3b82f6, #2563eb);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    text-decoration: none;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+/* Tabla estilos */
+.table-container {
+    background: white;
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
+    border: 1px solid #eff3f8;
+    overflow-x: auto;
+}
+
+.reservas-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.reservas-table thead th {
+    padding: 16px 12px;
+    font-weight: 600;
+    color: #1e293b;
+    border-bottom: 2px solid #e2e8f0;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.reservas-table tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.reservas-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Badges de estado */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-pendiente {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.status-confirmada {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-cancelada {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.status-finalizada {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    background: transparent;
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-edit {
+    color: #3b82f6;
+    background: #eef2ff;
+}
+
+.btn-edit:hover {
+    background: #3b82f6;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.btn-delete:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-services {
+    color: #8b5cf6;
+    background: #ede9fe;
+}
+
+.btn-services:hover {
+    background: #8b5cf6;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-pay {
+    color: #10b981;
+    background: #ecfdf5;
+}
+
+.btn-pay:hover {
+    background: #10b981;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-status {
+    color: #f59e0b;
+    background: #fffbeb;
+}
+
+.btn-status:hover {
+    background: #f59e0b;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    max-width: 550px;
+    width: 90%;
+    border-radius: 32px;
+    padding: 32px;
+    animation: fadeUp 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Paginación */
+.paginator-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.paginator-info {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.paginator-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.paginator-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    height: 35px;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.paginator-btn:hover:not(.disabled):not(.active) {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #1e293b;
+}
+
+.paginator-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+}
+
+.paginator-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f8fafc;
+}

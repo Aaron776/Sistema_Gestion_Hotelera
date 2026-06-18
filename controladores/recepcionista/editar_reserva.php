@@ -1,0 +1,195 @@
+<?php
+require_once '../../conexion/session.php';
+require_once '../../conexion/bd.php';
+require_once '../../helpers/Encriptar.php';
+
+// 1. Verificación de Rol (Solo recepcionistas pueden editar la reserva)
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'recepcionista') {
+    header("Location: ../../acceso_denegado.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_habitacion']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin']) && isset($_POST['id_reserva']) && isset($_POST['id_cliente'])) {
+    // Validar token CSRF
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        header("Location: ../../acceso_denegado.php");
+        exit;
+    }
+
+    $id_recepcionista    = $_SESSION['id_usuario']; // id del recepcionista logueado que hizo la reserva
+    $id_habitacion = trim($_POST['id_habitacion']);
+    $fecha_inicio  = trim($_POST['fecha_inicio']);
+    $fecha_fin     = trim($_POST['fecha_fin']);
+    $id_reserva    = Crypto::decrypt(trim($_POST['id_reserva']));
+    $id_cliente = trim($_POST['id_cliente']);
+    $errores = [];
+
+    // Validar ID de habitación
+    if (empty($id_habitacion)) {
+        $errores[] = "El ID de la habitación es requerido";
+    } elseif (!is_numeric($id_habitacion) || $id_habitacion <= 0) {
+        $errores[] = "El ID de la habitación no es válido";
+    }
+
+    if (empty($id_reserva) || !is_numeric($id_reserva) || $id_reserva <= 0) {
+        $errores[] = "El ID de la reserva no es válido";
+    }
+
+    // Validar ID de cliente
+    if (empty($id_cliente)) {
+        $errores[] = "El ID del cliente es requerido";
+    } elseif (!is_numeric($id_cliente) || $id_cliente <= 0) {
+        $errores[] = "El ID del cliente no es válido";
+    }
+
+    // ✅ Validación robusta de fechas con DateTime
+    $hoy   = new DateTime('today');
+    $inicio = DateTime::createFromFormat('Y-m-d', $fecha_inicio);
+    $fin    = DateTime::createFromFormat('Y-m-d', $fecha_fin);
+
+    if (!$inicio || !$fin) {
+        $errores[] = "Formato de fecha inválido. Use el formato YYYY-MM-DD.";
+    } else {
+        if ($inicio < $hoy) {
+            $errores[] = "La fecha de inicio no puede ser anterior a hoy.";
+        }
+        if ($fin <= $inicio) {
+            $errores[] = "La fecha de fin debe ser posterior a la fecha de inicio.";
+        }
+    }
+
+    // Verificar si la reserva existe, fue registrada por un recepcionista y está en estado Confirmada
+    if (empty($errores)) {
+        try {
+            $sql = $conexion->prepare("SELECT id, estado, cliente_id FROM reservas WHERE id = :id_reserva AND empleado_id = :id_recepcionista LIMIT 1");
+            $sql->bindParam(":id_reserva", $id_reserva, PDO::PARAM_INT);
+            $sql->bindParam(":id_recepcionista", $id_recepcionista, PDO::PARAM_INT);
+            $sql->execute();
+            $reserva = $sql->fetch(PDO::FETCH_OBJ);
+
+            if (!$reserva) {
+                $errores[] = "La reserva no existe o no te pertenece.";
+            } elseif ($reserva->estado !== 'confirmada') {
+                $errores[] = "Solo puedes editar reservas en estado Confirmada. Esta reserva está en estado: " . ucfirst($reserva->estado) . ".";
+            } else {
+                $id_cliente = $reserva->cliente_id; // Usar el ID real desde la BD, no del POST
+            }
+        } catch (PDOException $e) {
+            error_log("Error al verificar la reserva: " . $e->getMessage());
+            $errores[] = "Error al verificar la reserva en la base de datos.";
+        }
+    }
+
+    // Verificar disponibilidad de la habitación en las fechas seleccionadas
+    if (empty($errores)) {
+        try {
+            // Se excluye la reserva actual (:id_reserva_actual) para no bloquearse a sí misma
+            $sql = $conexion->prepare("
+                SELECT r.id FROM reservas r
+                INNER JOIN reserva_habitacion rh ON rh.reserva_id = r.id
+                WHERE rh.habitacion_id = :id_habitacion
+                AND r.id != :id_reserva_actual
+                AND r.estado NOT IN ('cancelada', 'finalizada')
+                AND r.fecha_inicio <= :fecha_fin
+                AND r.fecha_fin >= :fecha_inicio
+                LIMIT 1
+            ");
+            $sql->bindParam(":id_habitacion",    $id_habitacion, PDO::PARAM_INT);
+            $sql->bindParam(":id_reserva_actual", $id_reserva,   PDO::PARAM_INT);
+            $sql->bindParam(":fecha_inicio",      $fecha_inicio,  PDO::PARAM_STR);
+            $sql->bindParam(":fecha_fin",         $fecha_fin,     PDO::PARAM_STR);
+            $sql->execute();
+            $reserva_existente = $sql->fetch();
+
+            if ($reserva_existente) {
+                $errores[] = "La habitación no está disponible en las fechas seleccionadas.";
+            }
+        } catch (PDOException $e) {
+            error_log("Error al verificar disponibilidad: " . $e->getMessage());
+            $errores[] = "Error al verificar disponibilidad en la base de datos";
+        }
+    }
+
+    // Si no hay errores, editar la reserva
+    if (empty($errores)) {
+        try {
+            $conexion->beginTransaction();
+
+            // ✅ Obtener precio real de la habitación desde la BD
+            $sql = $conexion->prepare("SELECT precio FROM habitaciones WHERE id = :id_habitacion AND estado != 'mantenimiento'");
+            $sql->bindParam(":id_habitacion", $id_habitacion, PDO::PARAM_INT);
+            $sql->execute();
+            $habitacion = $sql->fetch(PDO::FETCH_OBJ);
+
+            if (!$habitacion) {
+                $conexion->rollBack();
+                $_SESSION['errores'] = ["La habitación seleccionada no existe o se encuentra en mantenimiento indefinido."];
+                header("Location: ../../recepcionista/gestion_reservas.php");
+                exit;
+            }
+
+            // ✅ Calcular el total en el servidor: precio_noche × número de noches
+            $noches          = $inicio->diff($fin)->days;
+            $total_calculado = $habitacion->precio * $noches;
+
+            // Actualizar la reserva en la tabla reservas
+            $sql = $conexion->prepare("UPDATE reservas SET fecha_inicio = :fecha_inicio, fecha_fin = :fecha_fin, total = :total WHERE id = :id_reserva AND empleado_id = :id_recepcionista AND estado = 'confirmada'");
+            $sql->bindParam(":fecha_inicio", $fecha_inicio,    PDO::PARAM_STR);
+            $sql->bindParam(":fecha_fin",    $fecha_fin,       PDO::PARAM_STR);
+            $sql->bindParam(":total",        $total_calculado, PDO::PARAM_STR);
+            $sql->bindParam(":id_reserva",   $id_reserva,      PDO::PARAM_INT);
+            $sql->bindParam(":id_recepcionista", $id_recepcionista, PDO::PARAM_INT);
+            $sql->execute();
+
+
+            // Actualizar en la tabla pivote reserva_habitacion
+            $sql = $conexion->prepare("UPDATE reserva_habitacion SET habitacion_id = :id_habitacion, precio = :precio WHERE reserva_id = :id_reserva");
+            $sql->bindParam(":id_habitacion", $id_habitacion,      PDO::PARAM_INT);
+            $sql->bindParam(":precio",        $habitacion->precio, PDO::PARAM_STR);
+            $sql->bindParam(":id_reserva",    $id_reserva,         PDO::PARAM_INT);
+            $sql->execute();
+
+             // ✅ Notificación al cliente (actualización de su reserva)
+            $fecha_formateada = date("d/m/Y", strtotime($fecha_inicio));
+            $msg_cliente = "📅 ¡Buenas noticias! Hemos actualizado su reserva (#{$id_reserva}) exitosamente. Lo esperamos el {$fecha_formateada}.";
+            $sql_notif = $conexion->prepare("INSERT INTO notificaciones (usuario_id, mensaje) VALUES (:uid, :msg)");
+            $sql_notif->bindParam(':uid', $id_cliente, PDO::PARAM_INT);
+            $sql_notif->bindParam(':msg', $msg_cliente, PDO::PARAM_STR);
+            $sql_notif->execute();
+
+            // ✅ Notificación al staff activo (admins y recepcionistas)
+            $sql_staff = $conexion->prepare("SELECT id FROM usuarios WHERE rol IN ('admin', 'recepcionista') AND estado = 'activo'");
+            $sql_staff->execute();
+            $staff = $sql_staff->fetchAll(PDO::FETCH_OBJ);
+
+            $msg_staff = "✏️ La reserva (#{$id_reserva}) fue actualizada por recepción ({$_SESSION['nombre']}).";
+            $sql_notif_staff = $conexion->prepare("INSERT INTO notificaciones (usuario_id, mensaje) VALUES (:uid, :msg)");
+            foreach ($staff as $miembro) {
+                $sql_notif_staff->bindParam(':uid', $miembro->id, PDO::PARAM_INT);
+                $sql_notif_staff->bindParam(':msg', $msg_staff,   PDO::PARAM_STR);
+                $sql_notif_staff->execute();
+            }
+
+            $conexion->commit();
+
+            $_SESSION['exito'] = "La reserva #{$id_reserva} ha sido actualizada correctamente.";
+            header("Location: ../../recepcionista/gestion_reservas.php");
+            exit;
+
+        } catch (Exception $e) {
+            $conexion->rollBack();
+            error_log("Error al editar la reserva: " . $e->getMessage());
+            $_SESSION['errores'] = ["Ocurrió un error al actualizar la reserva. Por favor, inténtelo nuevamente."];
+            header("Location: ../../recepcionista/editar_reserva.php?id_reserva=" . Crypto::encrypt($id_reserva));
+            exit;
+        }
+    } else {
+        $_SESSION['errores'] = $errores;
+        header("Location: ../../recepcionista/editar_reserva.php?id_reserva=" . Crypto::encrypt($id_reserva));
+        exit;
+    }
+} else {
+    $_SESSION['errores'] = ["Solicitud no válida o datos incompletos"];
+    header("Location: ../../recepcionista/gestion_reservas.php");
+    exit;
+}
